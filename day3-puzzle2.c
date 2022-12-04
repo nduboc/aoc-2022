@@ -13,12 +13,10 @@ int prio(char c) {
     }
 }
 
-#define ITEM_COUNT (128) // len of the ascii set
-
-void clear_counts(int* t, int len) {
-    while (len-- > 0) {
-        *(t++) = 0;
-    }
+void clear_counts(int (*t)[128][3]) {
+    for (int i = 0; i < 128; i++)
+        for (int j = 0; j < 3; j++)
+            (*t)[i][j] = 0;
 }
 
 int main() {
@@ -39,18 +37,18 @@ int main() {
     char line[100];
     int ln = 0;
     int sum = 0;
-    int counts[ITEM_COUNT*3]; // presence (0/1) for each character on each 3 lines of the group
-    clear_counts(&counts[0], ITEM_COUNT*3);
+    int counts[128][3]; // presence (0/1) for each character on each 3 lines of the group
+    clear_counts(&counts);
     while (fscanf(f, "%s", &line[0]) != EOF) {
         ln += 1;
         for (int i = 0; line[i] != 0; i++) {
-            counts[line[i]*3 + ((ln-1)%3)] = 1;
+            counts[line[i]][(ln-1)%3] = 1;
         }
         
         if (ln % 3 == 0) {
             char badge_letter = -1;
-            for (int i = 0; i < ITEM_COUNT; i++) {
-                if (counts[i*3 + 0] == 1 && counts[i*3 + 1] == 1 && counts[i*3 + 2] == 1) {
+            for (int i = 0; i < 128; i++) {
+                if (counts[i][0] == 1 && counts[i][1] == 1 && counts[i][2] == 1) {
                     badge_letter = i;
                     break;
                 }
@@ -60,7 +58,7 @@ int main() {
                 return 1;
             }
             sum += prio(badge_letter);
-            clear_counts(&counts[0], ITEM_COUNT * 3);
+            clear_counts(&counts);
         }
     }
 
