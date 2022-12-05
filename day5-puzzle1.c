@@ -63,9 +63,9 @@ int main() {
     fgetc(f); // skip empty line
     ln += 1;
 
-    int nbCrane, from, to;
+    int nbCrate, from, to;
     while (1) {
-        int read = fscanf(f, "move %d from %d to %d\n", &nbCrane, &from, &to);
+        int read = fscanf(f, "move %d from %d to %d\n", &nbCrate, &from, &to);
         ln += 1;
         if (read == EOF) {
             break;
@@ -79,7 +79,7 @@ int main() {
         from --;
         to --;
         
-        for (int i = 0; i < nbCrane; i++) {
+        for (int i = 0; i < nbCrate; i++) {
             stacks[to][stack_len[to]++] = stacks[from][(stack_len[from]--) - 1];
             if (stack_len[from] < 0) {
                 printf("Error stack_len[%d] < 0", from);
